@@ -1,0 +1,123 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drop table organism;
+drop table multicell;
+drop table uni;
+drop table sample;
+drop table dna_seq;
+drop table gene_seq;
+drop table pro_seq;
+
+create table organism(oid varchar(25) primary key, kingdom varchar(25), phylum varchar(25), class varchar(25), ord varchar(25), genus varchar(25), species varchar(25));
+
+create table multicell(oid varchar(25) primary key, country varchar(25), lifespan varchar(25), common varchar(25), food varchar(25), foreign key(oid) references organism on delete cascade);
+
+create table uni(oid varchar(25) primary key, common varchar(25), ph varchar(25), area varchar(25), foreign key(oid) references organism on delete cascade);
+
+create table sample(sid varchar(25) primary key, oid varchar(25), doc varchar(25), num varchar(25), foreign key(oid) references organism(oid) on delete cascade);
+
+create table dna_seq(did varchar(25) primary key, sid varchar(25), sequence varchar(25), siz varchar(25), foreign key(sid) references sample(sid) on delete cascade);
+
+create table gene_seq(gid varchar(25) primary key, did varchar(25), locus varchar(25), sequence varchar(25), func varchar(25), siz varchar(10), foreign key(did) references dna_seq(did) on delete cascade);
+
+create table pro_seq(pid varchar(25) primary key, gid varchar(25), name varchar(25), sequence varchar(25), siz varchar(25), foreign key(gid) references gene_seq(gid) on delete cascade);
+
+`````````````INSERT
+insert into organism values('1', 'Animalia', 'Chordata', 'Mammalia', 'Primates', 'Homo', 'Homosapiens');
+
+ insert into organism values('2', 'Animalia', 'Arthropoda', 'Insecta', 'Diptera', 'Drosophilidae', 'Drosophila');
+
+ insert into organism values('3', 'Eubacteria', 'Proteobacteria', 'Gammaproteobacteria', 'Enterobacteriales', 'Escherichia', 'E.coli');
+~~~~~~~~
+ insert into multicell values('1', 'Africa', '70yrs', 'Human', 'Heterotroph');
+
+
+
+ insert into multicell values('2', '----', '30days', 'Fruit Fly', 'Heterotroph');
+
+
+~~~~~~~~~
+ insert into uni values('3', 'E.Coli', '3-4', 'Worldwide');
+
+
+~~~~~~~~~
+ insert into sample values('1', '1', '3/February/2010', '20');
+
+
+
+ insert into sample values('2', '2', '28/May/2011', '2');
+
+
+
+ insert into sample values('3', '3', '10/March/2012', '1000');
+
+
+~~~~~~~~~
+ insert into dna_seq values('cr12', '1', 'CR12.txt', '6806');
+
+
+
+ insert into dna_seq values('cr17', '1', 'CR17.txt', '9272');
+
+
+
+ insert into dna_seq values('cr19', '1', 'CR19.txt', '40680');
+
+
+
+ insert into dna_seq values('3rdr', '2', '3RDR.txt', '35625');
+
+
+
+ insert into dna_seq values('CHRrecA', '3', 'CHRrecA.txt', '1399');
+
+
+~~~~~~~~
+ insert into gene_seq values ('KRT1', 'cr12' , '12q13.13' , 'krt1.txt' , 'forms keratin protein', '5673');
+
+
+
+ insert into gene_seq values ('KRT2', 'cr17' , '17q21.2' , 'KRT10.txt' , 'forms keratin protein', '4505');
+
+
+
+ insert into gene_seq values('MYBPC2', 'cr19',  '19Q13.33', 'MYPC2.txt', 'motility processes', '33901');
+
+ insert into gene_seq values('Lab', '3rdr', '84A1-84A1', 'Lab.txt', 'terminate proliferation..', '17409');
+
+
+
+ insert into gene_seq values('recA', 'CHRrecA', 'b2699(locus tag)', 'recA.txt', 'repair and maintain dna', '1077');
+
+
+~~~~~~~~~
+		 insert into pro_seq values('4ZRYA', 'KRT1', 'keratin1', '4ZRYA.txt', '124')
+		;
+
+
+
+		 insert into pro_seq values('4ZRYB', 'KRT2', 'keratin10', '4ZRYB.txt', '120'
+		);
+
+
+
+		 insert into pro_seq values('MYBPC2_P', 'MYBPC2', 'MYOSIN_C2', 'MYBPC2_P.txt
+		', '1141');
+
+
+
+		 insert into pro_seq values('LAB_DROME', 'Lab', 'labial_protein', 'LAB_DROME
+		.txt', '645');
+
+
+
+		 insert into pro_seq values('recA_prot' ,'recA', 'recA', 'recAProt.txt', '35
+		2');
+
+
+alter table organism add(type char(1) check(type = 'M' or type = 'U' or type = 'm' or type = 'u'));
+update table organism set type = 'm' where oid = '1';
+update table organism set type = 'm' where oid = '2';
+update table organism set type = 'u' where oid = '3';
+
+XOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXO
+
